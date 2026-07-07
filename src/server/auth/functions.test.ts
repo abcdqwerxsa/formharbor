@@ -50,3 +50,20 @@ describe('register', () => {
     await expect(register({ data: { email, password: 'password123' } })).rejects.toThrow()
   })
 })
+
+describe('login', () => {
+  it('logs in a registered user and sets a cookie', async () => {
+    const email = `l${Math.random()}@x.test`
+    await register({ data: { email, password: 'password123' } })
+    setCookie = []
+    const user = await login({ data: { email, password: 'password123' } })
+    expect(user.email).toBe(email)
+    expect(setCookie.some((c) => c.startsWith('session='))).toBe(true)
+  })
+
+  it('rejects a wrong password', async () => {
+    const email = `w${Math.random()}@x.test`
+    await register({ data: { email, password: 'password123' } })
+    await expect(login({ data: { email, password: 'wrong-password' } })).rejects.toThrow()
+  })
+})
