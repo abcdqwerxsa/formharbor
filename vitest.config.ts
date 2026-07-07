@@ -19,5 +19,9 @@ export default defineConfig({
     environment: 'node',
     setupFiles: [],
     include: ['src/**/*.test.ts'],
+    // Disable file parallelism: against remote CockroachDB, parallel test files
+    // hit a read-after-write FK race (Session_userId_fkey violated) when one
+    // file's session cleanup runs concurrently with another's insert.
+    fileParallelism: false,
   },
 })
