@@ -1,6 +1,7 @@
 import { describe, it, expect, afterEach, vi } from 'vitest'
 import { prisma } from '#/db'
 import { register, login, logout } from './functions'
+import { getRequestHeader } from '@tanstack/react-start/server'
 
 // capture Set-Cookie writes
 let setCookie: string[] = []
@@ -27,7 +28,7 @@ vi.mock('@tanstack/react-start/server', async () => {
   return {
     ...actual,
     setResponseHeader: (k: string, v: string) => { if (k === 'Set-Cookie') setCookie.push(v) },
-    getRequestHeader: () => null, // no session by default
+    getRequestHeader: vi.fn(() => null), // no session by default
   }
 })
 
@@ -65,5 +66,26 @@ describe('login', () => {
     const email = `w${Math.random()}@x.test`
     await register({ data: { email, password: 'password123' } })
     await expect(login({ data: { email, password: 'wrong-password' } })).rejects.toThrow()
+  })
+})
+
+describe('logout', () => {
+  it('clears the cookie when there is a session', async () => {
+    const email = `o${Math.random()}@x.test`
+    await register({ data: { email, password: 'password123' } })
+    const sessionId = setCookie.find((c) => c.startsWith('session='))!.split('=')[1].split(';')[0]
+    setCookie = []
+    // simulate the request carrying the cookie
+    vi.mocked(getRequestHeader).mockReturnValue(`session=${sessionId}`)
+    await logout()
+    expect(setCookie.some((c) => c.includes('Max-Age=0'))).toBe(true)
+    vi.mocked(getRequestHeader).mockReturnValue(null)
+  })
+
+  it('is a no-op (still clears cookie) when there is no session', async () => {
+    setCookie = []
+    vi.mocked(getRequestHeader).mockReturnValue(null)
+    await logout()
+    expect(setCookie.some((c) => c.includes('Max-Age=0'))).toBe(true)
   })
 })

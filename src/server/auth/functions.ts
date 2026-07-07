@@ -1,6 +1,6 @@
 import { createServerFn } from '@tanstack/react-start'
 import { z } from 'zod'
-import { setResponseHeader } from '@tanstack/react-start/server'
+import { setResponseHeader, getRequestHeader } from '@tanstack/react-start/server'
 import { prisma } from '#/db'
 import { hashPassword, verifyPassword } from './password'
 import { buildSessionCookie, buildClearCookie, readSessionId } from './cookie'
@@ -31,3 +31,10 @@ export const login = createServerFn({ method: 'POST' })
     setResponseHeader('Set-Cookie', buildSessionCookie(session.id))
     return { id: user.id, email: user.email }
   })
+
+export const logout = createServerFn({ method: 'POST' }).handler(async () => {
+  const sessionId = readSessionId(getRequestHeader('cookie'))
+  if (sessionId) await deleteSession(sessionId)
+  setResponseHeader('Set-Cookie', buildClearCookie())
+  return { ok: true }
+})
