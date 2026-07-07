@@ -15,10 +15,12 @@ import { Route as RegisterRouteImport } from './routes/register'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as GridRouteImport } from './routes/grid'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DemoWorkosRouteImport } from './routes/demo/workos'
 import { Route as DemoPrismaRouteImport } from './routes/demo/prisma'
 import { Route as DemoNeonRouteImport } from './routes/demo/neon'
+import { Route as AuthenticatedAppRouteImport } from './routes/_authenticated/app'
 import { Route as DemoSentryTestingRouteImport } from './routes/demo/sentry.testing'
 
 const UnkeyRoute = UnkeyRouteImport.update({
@@ -51,6 +53,10 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRoute = AuthenticatedRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -71,6 +77,11 @@ const DemoNeonRoute = DemoNeonRouteImport.update({
   path: '/demo/neon',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAppRoute = AuthenticatedAppRouteImport.update({
+  id: '/app',
+  path: '/app',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const DemoSentryTestingRoute = DemoSentryTestingRouteImport.update({
   id: '/demo/sentry/testing',
   path: '/demo/sentry/testing',
@@ -85,6 +96,7 @@ export interface FileRoutesByFullPath {
   '/register': typeof RegisterRoute
   '/serpapi': typeof SerpapiRoute
   '/unkey': typeof UnkeyRoute
+  '/app': typeof AuthenticatedAppRoute
   '/demo/neon': typeof DemoNeonRoute
   '/demo/prisma': typeof DemoPrismaRoute
   '/demo/workos': typeof DemoWorkosRoute
@@ -98,6 +110,7 @@ export interface FileRoutesByTo {
   '/register': typeof RegisterRoute
   '/serpapi': typeof SerpapiRoute
   '/unkey': typeof UnkeyRoute
+  '/app': typeof AuthenticatedAppRoute
   '/demo/neon': typeof DemoNeonRoute
   '/demo/prisma': typeof DemoPrismaRoute
   '/demo/workos': typeof DemoWorkosRoute
@@ -106,12 +119,14 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/about': typeof AboutRoute
   '/grid': typeof GridRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/serpapi': typeof SerpapiRoute
   '/unkey': typeof UnkeyRoute
+  '/_authenticated/app': typeof AuthenticatedAppRoute
   '/demo/neon': typeof DemoNeonRoute
   '/demo/prisma': typeof DemoPrismaRoute
   '/demo/workos': typeof DemoWorkosRoute
@@ -127,6 +142,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/serpapi'
     | '/unkey'
+    | '/app'
     | '/demo/neon'
     | '/demo/prisma'
     | '/demo/workos'
@@ -140,6 +156,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/serpapi'
     | '/unkey'
+    | '/app'
     | '/demo/neon'
     | '/demo/prisma'
     | '/demo/workos'
@@ -147,12 +164,14 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
     | '/about'
     | '/grid'
     | '/login'
     | '/register'
     | '/serpapi'
     | '/unkey'
+    | '/_authenticated/app'
     | '/demo/neon'
     | '/demo/prisma'
     | '/demo/workos'
@@ -161,6 +180,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   AboutRoute: typeof AboutRoute
   GridRoute: typeof GridRoute
   LoginRoute: typeof LoginRoute
@@ -217,6 +237,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -245,6 +272,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DemoNeonRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/app': {
+      id: '/_authenticated/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AuthenticatedAppRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/demo/sentry/testing': {
       id: '/demo/sentry/testing'
       path: '/demo/sentry/testing'
@@ -255,8 +289,21 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedRouteChildren {
+  AuthenticatedAppRoute: typeof AuthenticatedAppRoute
+}
+
+const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedAppRoute: AuthenticatedAppRoute,
+}
+
+const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
+  AuthenticatedRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRoute: AuthenticatedRouteWithChildren,
   AboutRoute: AboutRoute,
   GridRoute: GridRoute,
   LoginRoute: LoginRoute,
