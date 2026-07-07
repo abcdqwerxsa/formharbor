@@ -19,8 +19,8 @@ const config: runtime.GetPrismaClientConfig = {
   "previewFeatures": [],
   "clientVersion": "7.8.0",
   "engineVersion": "3c6e192761c0362d496ed980de936e2f3cebcd3a",
-  "activeProvider": "postgresql",
-  "inlineSchema": "generator client {\n  provider = \"prisma-client\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel Todo {\n  id        Int      @id @default(autoincrement())\n  title     String\n  createdAt DateTime @default(now())\n}\n",
+  "activeProvider": "cockroachdb",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"cockroachdb\"\n}\n\nmodel Todo {\n  id        String   @id @default(cuid())\n  title     String\n  createdAt DateTime @default(now())\n}\n",
   "runtimeDataModel": {
     "models": {},
     "enums": {},
@@ -32,10 +32,10 @@ const config: runtime.GetPrismaClientConfig = {
   }
 }
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"Todo\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"Todo\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
 config.parameterizationSchema = {
-  strings: JSON.parse("[\"where\",\"Todo.findUnique\",\"Todo.findUniqueOrThrow\",\"orderBy\",\"cursor\",\"Todo.findFirst\",\"Todo.findFirstOrThrow\",\"Todo.findMany\",\"data\",\"Todo.createOne\",\"Todo.createMany\",\"Todo.createManyAndReturn\",\"Todo.updateOne\",\"Todo.updateMany\",\"Todo.updateManyAndReturn\",\"create\",\"update\",\"Todo.upsertOne\",\"Todo.deleteOne\",\"Todo.deleteMany\",\"having\",\"_count\",\"_avg\",\"_sum\",\"_min\",\"_max\",\"Todo.groupBy\",\"Todo.aggregate\",\"AND\",\"OR\",\"NOT\",\"id\",\"title\",\"createdAt\",\"equals\",\"in\",\"notIn\",\"lt\",\"lte\",\"gt\",\"gte\",\"not\",\"contains\",\"startsWith\",\"endsWith\",\"set\",\"increment\",\"decrement\",\"multiply\",\"divide\"]"),
-  graph: "MAsQBhwAACUAMB0AAAQAEB4AACUAMB8CAAAAASABACcAISFAACgAIQEAAAABACABAAAAAQAgBhwAACUAMB0AAAQAEB4AACUAMB8CACYAISABACcAISFAACgAIQADAAAABAAgAwAABQAwBAAAAQAgAwAAAAQAIAMAAAUAMAQAAAEAIAMAAAAEACADAAAFADAEAAABACADHwIAAAABIAEAAAABIUAAAAABAQgAAAkAIAMfAgAAAAEgAQAAAAEhQAAAAAEBCAAACwAwAQgAAAsAMAMfAgAwACEgAQAuACEhQAAvACECAAAAAQAgCAAADgAgAx8CADAAISABAC4AISFAAC8AIQIAAAAEACAIAAAQACACAAAABAAgCAAAEAAgAwAAAAEAIA8AAAkAIBAAAA4AIAEAAAABACABAAAABAAgBRUAACkAIBYAACoAIBcAAC0AIBgAACwAIBkAACsAIAYcAAAaADAdAAAXABAeAAAaADAfAgAbACEgAQAcACEhQAAdACEDAAAABAAgAwAAFgAwFAAAFwAgAwAAAAQAIAMAAAUAMAQAAAEAIAYcAAAaADAdAAAXABAeAAAaADAfAgAbACEgAQAcACEhQAAdACENFQAAHwAgFgAAJAAgFwAAHwAgGAAAHwAgGQAAHwAgIgIAAAABIwIAAAAEJAIAAAAEJQIAAAABJgIAAAABJwIAAAABKAIAAAABKQIAIwAhDhUAAB8AIBgAACIAIBkAACIAICIBAAAAASMBAAAABCQBAAAABCUBAAAAASYBAAAAAScBAAAAASgBAAAAASkBACEAISoBAAAAASsBAAAAASwBAAAAAQsVAAAfACAYAAAgACAZAAAgACAiQAAAAAEjQAAAAAQkQAAAAAQlQAAAAAEmQAAAAAEnQAAAAAEoQAAAAAEpQAAeACELFQAAHwAgGAAAIAAgGQAAIAAgIkAAAAABI0AAAAAEJEAAAAAEJUAAAAABJkAAAAABJ0AAAAABKEAAAAABKUAAHgAhCCICAAAAASMCAAAABCQCAAAABCUCAAAAASYCAAAAAScCAAAAASgCAAAAASkCAB8AIQgiQAAAAAEjQAAAAAQkQAAAAAQlQAAAAAEmQAAAAAEnQAAAAAEoQAAAAAEpQAAgACEOFQAAHwAgGAAAIgAgGQAAIgAgIgEAAAABIwEAAAAEJAEAAAAEJQEAAAABJgEAAAABJwEAAAABKAEAAAABKQEAIQAhKgEAAAABKwEAAAABLAEAAAABCyIBAAAAASMBAAAABCQBAAAABCUBAAAAASYBAAAAAScBAAAAASgBAAAAASkBACIAISoBAAAAASsBAAAAASwBAAAAAQ0VAAAfACAWAAAkACAXAAAfACAYAAAfACAZAAAfACAiAgAAAAEjAgAAAAQkAgAAAAQlAgAAAAEmAgAAAAEnAgAAAAEoAgAAAAEpAgAjACEIIggAAAABIwgAAAAEJAgAAAAEJQgAAAABJggAAAABJwgAAAABKAgAAAABKQgAJAAhBhwAACUAMB0AAAQAEB4AACUAMB8CACYAISABACcAISFAACgAIQgiAgAAAAEjAgAAAAQkAgAAAAQlAgAAAAEmAgAAAAEnAgAAAAEoAgAAAAEpAgAfACELIgEAAAABIwEAAAAEJAEAAAAEJQEAAAABJgEAAAABJwEAAAABKAEAAAABKQEAIgAhKgEAAAABKwEAAAABLAEAAAABCCJAAAAAASNAAAAABCRAAAAABCVAAAAAASZAAAAAASdAAAAAAShAAAAAASlAACAAIQAAAAAAAS0BAAAAAQEtQAAAAAEFLQIAAAABLgIAAAABLwIAAAABMAIAAAABMQIAAAABAAAAAAUVAAYWAAcXAAgYAAkZAAoAAAAAAAUVAAYWAAcXAAgYAAkZAAoBAgECAwEFBgEGBwEHCAEJCgEKDAILDQMMDwENEQIOEgQREwESFAETFQIaGAUbGQs"
+  strings: JSON.parse("[\"where\",\"Todo.findUnique\",\"Todo.findUniqueOrThrow\",\"orderBy\",\"cursor\",\"Todo.findFirst\",\"Todo.findFirstOrThrow\",\"Todo.findMany\",\"data\",\"Todo.createOne\",\"Todo.createMany\",\"Todo.createManyAndReturn\",\"Todo.updateOne\",\"Todo.updateMany\",\"Todo.updateManyAndReturn\",\"create\",\"update\",\"Todo.upsertOne\",\"Todo.deleteOne\",\"Todo.deleteMany\",\"having\",\"_count\",\"_min\",\"_max\",\"Todo.groupBy\",\"Todo.aggregate\",\"AND\",\"OR\",\"NOT\",\"id\",\"title\",\"createdAt\",\"equals\",\"in\",\"notIn\",\"lt\",\"lte\",\"gt\",\"gte\",\"not\",\"contains\",\"startsWith\",\"endsWith\",\"set\"]"),
+  graph: "KQkQBhoAACIAMBsAAAQAEBwAACIAMB0BAAAAAR4BACMAIR9AACQAIQEAAAABACABAAAAAQAgBhoAACIAMBsAAAQAEBwAACIAMB0BACMAIR4BACMAIR9AACQAIQADAAAABAAgAwAABQAwBAAAAQAgAwAAAAQAIAMAAAUAMAQAAAEAIAMAAAAEACADAAAFADAEAAABACADHQEAAAABHgEAAAABH0AAAAABAQgAAAkAIAMdAQAAAAEeAQAAAAEfQAAAAAEBCAAACwAwAQgAAAsAMAMdAQAoACEeAQAoACEfQAApACECAAAAAQAgCAAADgAgAx0BACgAIR4BACgAIR9AACkAIQIAAAAEACAIAAAQACACAAAABAAgCAAAEAAgAwAAAAEAIA8AAAkAIBAAAA4AIAEAAAABACABAAAABAAgAxUAACUAIBYAACcAIBcAACYAIAYaAAAaADAbAAAXABAcAAAaADAdAQAbACEeAQAbACEfQAAcACEDAAAABAAgAwAAFgAwFAAAFwAgAwAAAAQAIAMAAAUAMAQAAAEAIAYaAAAaADAbAAAXABAcAAAaADAdAQAbACEeAQAbACEfQAAcACEOFQAAHgAgFgAAIQAgFwAAIQAgIAEAAAABIQEAAAAEIgEAAAAEIwEAAAABJAEAAAABJQEAAAABJgEAAAABJwEAIAAhKAEAAAABKQEAAAABKgEAAAABCxUAAB4AIBYAAB8AIBcAAB8AICBAAAAAASFAAAAABCJAAAAABCNAAAAAASRAAAAAASVAAAAAASZAAAAAASdAAB0AIQsVAAAeACAWAAAfACAXAAAfACAgQAAAAAEhQAAAAAQiQAAAAAQjQAAAAAEkQAAAAAElQAAAAAEmQAAAAAEnQAAdACEIIAIAAAABIQIAAAAEIgIAAAAEIwIAAAABJAIAAAABJQIAAAABJgIAAAABJwIAHgAhCCBAAAAAASFAAAAABCJAAAAABCNAAAAAASRAAAAAASVAAAAAASZAAAAAASdAAB8AIQ4VAAAeACAWAAAhACAXAAAhACAgAQAAAAEhAQAAAAQiAQAAAAQjAQAAAAEkAQAAAAElAQAAAAEmAQAAAAEnAQAgACEoAQAAAAEpAQAAAAEqAQAAAAELIAEAAAABIQEAAAAEIgEAAAAEIwEAAAABJAEAAAABJQEAAAABJgEAAAABJwEAIQAhKAEAAAABKQEAAAABKgEAAAABBhoAACIAMBsAAAQAEBwAACIAMB0BACMAIR4BACMAIR9AACQAIQsgAQAAAAEhAQAAAAQiAQAAAAQjAQAAAAEkAQAAAAElAQAAAAEmAQAAAAEnAQAhACEoAQAAAAEpAQAAAAEqAQAAAAEIIEAAAAABIUAAAAAEIkAAAAAEI0AAAAABJEAAAAABJUAAAAABJkAAAAABJ0AAHwAhAAAAASsBAAAAAQErQAAAAAEAAAAAAxUABhYABxcACAAAAAMVAAYWAAcXAAgBAgECAwEFBgEGBwEHCAEJCgEKDAILDQMMDwENEQIOEgQREwESFAETFQIYGAUZGQk"
 }
 
 async function decodeBase64AsWasm(wasmBase64: string): Promise<WebAssembly.Module> {
@@ -45,10 +45,10 @@ async function decodeBase64AsWasm(wasmBase64: string): Promise<WebAssembly.Modul
 }
 
 config.compilerWasm = {
-  getRuntime: async () => await import("@prisma/client/runtime/query_compiler_fast_bg.postgresql.mjs"),
+  getRuntime: async () => await import("@prisma/client/runtime/query_compiler_fast_bg.cockroachdb.mjs"),
 
   getQueryCompilerWasmModule: async () => {
-    const { wasm } = await import("@prisma/client/runtime/query_compiler_fast_bg.postgresql.wasm-base64.mjs")
+    const { wasm } = await import("@prisma/client/runtime/query_compiler_fast_bg.cockroachdb.wasm-base64.mjs")
     return await decodeBase64AsWasm(wasm)
   },
 

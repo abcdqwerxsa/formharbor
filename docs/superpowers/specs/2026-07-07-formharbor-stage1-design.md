@@ -17,6 +17,14 @@ Status: Draft (pending user review)
 >   session, `getCurrentUser` middleware, `/login` `/register` `/_authenticated`).
 > - Everywhere below, "WorkOS protects `/app/*`" is replaced by "self-hosted
 >   session + `_authenticated` route guard". All other routes/models/permissions stand.
+
+> **Revision 2026-07-07 (DB):** Database is **CockroachDB** (not Neon/postgres).
+> `datasource db { provider = "cockroachdb" }`. Prisma connects over the Postgres
+> wire protocol and **must run with proxy env vars unset** (the box's SOCKS proxy
+> can't carry Postgres wire; direct TCP works). `DATABASE_URL` includes
+> `connect_timeout=30`; the remote DB is slow (~70s for first push), expect
+> retries on P1001. CockroachDB disallows `Int @default(autoincrement())` — ids
+> use `String @default(cuid())`.
 Stage: 1 of a multi-stage roadmap (see "Out of scope / later stages")
 
 FormHarbor is a multi-tenant form/data-collection SaaS built on the existing

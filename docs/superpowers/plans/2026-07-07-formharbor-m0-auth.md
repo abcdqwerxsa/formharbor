@@ -13,10 +13,12 @@
 - Enter the Nix shell with `nix --extra-experimental-features 'nix-command flakes' develop`; package manager is **bun**.
 - `.npmrc` pins npmmirror; **`@workos/node` is NOT installable here** — do not attempt it. This plan removes WorkOS instead.
 - TanStack Start on Cloudflare Workers; `nodejs_compat` is already on. Use **Web Crypto (`crypto.subtle`)** — native on Node 20+ and Workers.
-- postgres via Prisma (Neon). Run `bun run db:generate` after editing `prisma/schema.prisma`; run `bun run db:push` to apply schema to the DB.
+- **CockroachDB** via Prisma (`provider = "cockroachdb"` in `prisma/schema.prisma`). CockroachDB disallows `Int @default(autoincrement())` — use `String @default(cuid())` or `BigInt`.
+- **Prisma must run with proxy env vars unset** (the box's SOCKS proxy can't carry Postgres wire; direct connect works). Prefix every DB-touching command/process (`prisma`, `db:*`, `bun run dev`, vitest) with: `unset ALL_PROXY all_proxy HTTP_PROXY http_proxy HTTPS_PROXY https_proxy NO_PROXY no_proxy`. `DATABASE_URL` already includes `connect_timeout=30`; the remote DB is slow (~70s for first push), so **retry on P1001**.
+- Run `bun run db:generate` after editing `prisma/schema.prisma`; run `bun run db:push --accept-data-loss` to apply.
 - Read `process.env` and request cookies **inside** handlers / middleware `.server()`, never at module scope.
 - `createMiddleware` method order: `middleware()` → `validator()` → `client()` → `server()`.
-- **Prerequisite:** a working `DATABASE_URL` in `.env.local` (replace the placeholder with a real Neon connection string before Task 1).
+- **Prerequisite:** CockroachDB `DATABASE_URL` is configured in `.env.local` (already set; direct connect works only with proxy env unset).
 - Lint stays green: `bun run lint` must pass. Commit after each task.
 
 ## File Structure
