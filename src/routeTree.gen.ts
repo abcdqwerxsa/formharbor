@@ -17,7 +17,6 @@ import { Route as GridRouteImport } from './routes/grid'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as DemoWorkosRouteImport } from './routes/demo/workos'
 import { Route as DemoPrismaRouteImport } from './routes/demo/prisma'
 import { Route as DemoNeonRouteImport } from './routes/demo/neon'
 import { Route as AuthenticatedAppRouteImport } from './routes/_authenticated/app'
@@ -62,11 +61,6 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DemoWorkosRoute = DemoWorkosRouteImport.update({
-  id: '/demo/workos',
-  path: '/demo/workos',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const DemoPrismaRoute = DemoPrismaRouteImport.update({
   id: '/demo/prisma',
   path: '/demo/prisma',
@@ -99,7 +93,6 @@ export interface FileRoutesByFullPath {
   '/app': typeof AuthenticatedAppRoute
   '/demo/neon': typeof DemoNeonRoute
   '/demo/prisma': typeof DemoPrismaRoute
-  '/demo/workos': typeof DemoWorkosRoute
   '/demo/sentry/testing': typeof DemoSentryTestingRoute
 }
 export interface FileRoutesByTo {
@@ -113,7 +106,6 @@ export interface FileRoutesByTo {
   '/app': typeof AuthenticatedAppRoute
   '/demo/neon': typeof DemoNeonRoute
   '/demo/prisma': typeof DemoPrismaRoute
-  '/demo/workos': typeof DemoWorkosRoute
   '/demo/sentry/testing': typeof DemoSentryTestingRoute
 }
 export interface FileRoutesById {
@@ -129,7 +121,6 @@ export interface FileRoutesById {
   '/_authenticated/app': typeof AuthenticatedAppRoute
   '/demo/neon': typeof DemoNeonRoute
   '/demo/prisma': typeof DemoPrismaRoute
-  '/demo/workos': typeof DemoWorkosRoute
   '/demo/sentry/testing': typeof DemoSentryTestingRoute
 }
 export interface FileRouteTypes {
@@ -145,7 +136,6 @@ export interface FileRouteTypes {
     | '/app'
     | '/demo/neon'
     | '/demo/prisma'
-    | '/demo/workos'
     | '/demo/sentry/testing'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -159,7 +149,6 @@ export interface FileRouteTypes {
     | '/app'
     | '/demo/neon'
     | '/demo/prisma'
-    | '/demo/workos'
     | '/demo/sentry/testing'
   id:
     | '__root__'
@@ -174,7 +163,6 @@ export interface FileRouteTypes {
     | '/_authenticated/app'
     | '/demo/neon'
     | '/demo/prisma'
-    | '/demo/workos'
     | '/demo/sentry/testing'
   fileRoutesById: FileRoutesById
 }
@@ -189,7 +177,6 @@ export interface RootRouteChildren {
   UnkeyRoute: typeof UnkeyRoute
   DemoNeonRoute: typeof DemoNeonRoute
   DemoPrismaRoute: typeof DemoPrismaRoute
-  DemoWorkosRoute: typeof DemoWorkosRoute
   DemoSentryTestingRoute: typeof DemoSentryTestingRoute
 }
 
@@ -251,13 +238,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/demo/workos': {
-      id: '/demo/workos'
-      path: '/demo/workos'
-      fullPath: '/demo/workos'
-      preLoaderRoute: typeof DemoWorkosRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/demo/prisma': {
       id: '/demo/prisma'
       path: '/demo/prisma'
@@ -312,9 +292,17 @@ const rootRouteChildren: RootRouteChildren = {
   UnkeyRoute: UnkeyRoute,
   DemoNeonRoute: DemoNeonRoute,
   DemoPrismaRoute: DemoPrismaRoute,
-  DemoWorkosRoute: DemoWorkosRoute,
   DemoSentryTestingRoute: DemoSentryTestingRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}
