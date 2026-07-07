@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as UnkeyRouteImport } from './routes/unkey'
 import { Route as SerpapiRouteImport } from './routes/serpapi'
 import { Route as RegisterRouteImport } from './routes/register'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as GridRouteImport } from './routes/grid'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
@@ -33,6 +34,11 @@ const SerpapiRoute = SerpapiRouteImport.update({
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
   path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GridRoute = GridRouteImport.update({
@@ -75,6 +81,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/grid': typeof GridRoute
+  '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/serpapi': typeof SerpapiRoute
   '/unkey': typeof UnkeyRoute
@@ -87,6 +94,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/grid': typeof GridRoute
+  '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/serpapi': typeof SerpapiRoute
   '/unkey': typeof UnkeyRoute
@@ -100,6 +108,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/grid': typeof GridRoute
+  '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/serpapi': typeof SerpapiRoute
   '/unkey': typeof UnkeyRoute
@@ -114,6 +123,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/grid'
+    | '/login'
     | '/register'
     | '/serpapi'
     | '/unkey'
@@ -126,6 +136,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/grid'
+    | '/login'
     | '/register'
     | '/serpapi'
     | '/unkey'
@@ -138,6 +149,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/grid'
+    | '/login'
     | '/register'
     | '/serpapi'
     | '/unkey'
@@ -151,6 +163,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   GridRoute: typeof GridRoute
+  LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
   SerpapiRoute: typeof SerpapiRoute
   UnkeyRoute: typeof UnkeyRoute
@@ -181,6 +194,13 @@ declare module '@tanstack/react-router' {
       path: '/register'
       fullPath: '/register'
       preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/grid': {
@@ -239,6 +259,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   GridRoute: GridRoute,
+  LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
   SerpapiRoute: SerpapiRoute,
   UnkeyRoute: UnkeyRoute,
