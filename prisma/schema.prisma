@@ -20,6 +20,7 @@ model User {
   passwordHash String
   createdAt    DateTime @default(now())
   sessions     Session[]
+  memberships  Membership[]
 }
 
 model Session {
@@ -28,4 +29,29 @@ model Session {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   expiresAt DateTime
   createdAt DateTime @default(now())
+}
+
+model Organization {
+  id          String       @id @default(cuid())
+  name        String
+  slug        String       @unique
+  createdAt   DateTime     @default(now())
+  memberships Membership[]
+}
+
+model Membership {
+  id     String       @id @default(cuid())
+  userId String
+  orgId  String
+  role   Role         @default(OWNER)
+  user   User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  org    Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, orgId])
+}
+
+enum Role {
+  OWNER
+  ADMIN
+  MEMBER
 }
