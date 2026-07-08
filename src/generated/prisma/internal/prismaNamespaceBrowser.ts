@@ -53,7 +53,9 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   Todo: 'Todo',
   User: 'User',
-  Session: 'Session'
+  Session: 'Session',
+  Organization: 'Organization',
+  Membership: 'Membership'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -97,6 +99,26 @@ export const SessionScalarFieldEnum = {
 } as const
 
 export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum]
+
+
+export const OrganizationScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  slug: 'slug',
+  createdAt: 'createdAt'
+} as const
+
+export type OrganizationScalarFieldEnum = (typeof OrganizationScalarFieldEnum)[keyof typeof OrganizationScalarFieldEnum]
+
+
+export const MembershipScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  orgId: 'orgId',
+  role: 'role'
+} as const
+
+export type MembershipScalarFieldEnum = (typeof MembershipScalarFieldEnum)[keyof typeof MembershipScalarFieldEnum]
 
 
 export const SortOrder = {

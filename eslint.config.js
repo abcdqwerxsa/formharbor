@@ -24,6 +24,13 @@ export default [
     },
   },
   {
-    ignores: ['eslint.config.js', 'prettier.config.js'],
+    // src/generated/prisma is the Prisma `runtime=workerd` client output — it
+    // contains a JS wasm glue file not in the tsconfig project, which trips
+    // @typescript-eslint/parser. It is generated, so skip linting it entirely.
+    ignores: [
+      'eslint.config.js',
+      'prettier.config.js',
+      'src/generated/prisma/**',
+    ],
   },
 ]

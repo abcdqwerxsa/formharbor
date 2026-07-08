@@ -11,4 +11,6 @@
 export type * from './models/Todo.ts'
 export type * from './models/User.ts'
 export type * from './models/Session.ts'
+export type * from './models/Organization.ts'
+export type * from './models/Membership.ts'
 export type * from './commonInputTypes.ts'

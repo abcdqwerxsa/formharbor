@@ -32,3 +32,13 @@ export type User = Prisma.UserModel
  * 
  */
 export type Session = Prisma.SessionModel
+/**
+ * Model Organization
+ * 
+ */
+export type Organization = Prisma.OrganizationModel
+/**
+ * Model Membership
+ * 
+ */
+export type Membership = Prisma.MembershipModel
