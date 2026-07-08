@@ -22,12 +22,17 @@ function wasmModulePlugin(): Plugin {
     name: 'wasm-module-loader',
     enforce: 'pre',
     resolveId(source, importer) {
-      if (typeof source !== 'string' || !source.endsWith('.wasm?module')) return null
+      if (typeof source !== 'string' || !source.endsWith('.wasm?module'))
+        return null
       // Resolve the wasm path relative to the importing file so we read the
       // right bytes (the id is `./query_compiler_fast_bg.wasm?module`, relative
       // to the generated client dir, not cwd).
-      const dir = importer ? fileURLToPath(new URL('.', `file://${importer}`)) : process.cwd()
-      const abs = fileURLToPath(new URL(source.replace(/\.wasm\?module$/, '.wasm'), `file://${dir}`))
+      const dir = importer
+        ? fileURLToPath(new URL('.', `file://${importer}`))
+        : process.cwd()
+      const abs = fileURLToPath(
+        new URL(source.replace(/\.wasm\?module$/, '.wasm'), `file://${dir}`),
+      )
       return `\0wasm:${abs}`
     },
     async load(id) {
