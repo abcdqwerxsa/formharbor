@@ -11,3 +11,5 @@ dist-ssr
 .vinxi
 __unconfig*
 todos.json
+# internal working notes (subagent reports/ledger) — never commit
+.superpowers/
