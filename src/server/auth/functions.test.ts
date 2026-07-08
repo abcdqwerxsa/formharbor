@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach, vi } from 'vitest'
-import { prisma } from '#/db'
+import { getPrisma } from '#/db'
 import { register, login, logout } from './functions'
 import { getRequestHeader } from '@tanstack/react-start/server'
 
@@ -34,6 +34,7 @@ vi.mock('@tanstack/react-start/server', async () => {
 
 afterEach(async () => {
   setCookie = []
+  const prisma = await getPrisma()
   await prisma.session.deleteMany({})
   await prisma.user.deleteMany({})
 })

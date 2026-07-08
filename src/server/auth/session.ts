@@ -1,9 +1,10 @@
 import '@tanstack/react-start/server-only'
-import { prisma } from '#/db'
+import { getPrisma } from '#/db'
 
 const ONE_DAY_MS = 1000 * 60 * 60 * 24
 
 export async function createSession(userId: string) {
+  const prisma = await getPrisma()
   return prisma.session.create({
     data: {
       id: crypto.randomUUID(),
@@ -15,6 +16,7 @@ export async function createSession(userId: string) {
 }
 
 export async function getSessionWithUser(id: string) {
+  const prisma = await getPrisma()
   const session = await prisma.session.findUnique({
     where: { id },
     select: { id: true, expiresAt: true, user: { select: { id: true, email: true } } },
@@ -28,5 +30,6 @@ export async function getSessionWithUser(id: string) {
 }
 
 export async function deleteSession(id: string): Promise<void> {
+  const prisma = await getPrisma()
   await prisma.session.delete({ where: { id } }).catch(() => {})
 }

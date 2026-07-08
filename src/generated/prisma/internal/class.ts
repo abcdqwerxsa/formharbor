@@ -11,7 +11,7 @@
  * Please import the `PrismaClient` class from the `client.ts` file instead.
  */
 
-import * as runtime from "@prisma/client/runtime/client"
+import * as runtime from "@prisma/client/runtime/wasm-compiler-edge"
 import type * as Prisma from "./prismaNamespace.ts"
 
 
@@ -20,7 +20,7 @@ const config: runtime.GetPrismaClientConfig = {
   "clientVersion": "7.8.0",
   "engineVersion": "3c6e192761c0362d496ed980de936e2f3cebcd3a",
   "activeProvider": "cockroachdb",
-  "inlineSchema": "generator client {\n  provider = \"prisma-client\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"cockroachdb\"\n}\n\nmodel Todo {\n  id        String   @id @default(cuid())\n  title     String\n  createdAt DateTime @default(now())\n}\n\nmodel User {\n  id           String    @id @default(cuid())\n  email        String    @unique\n  passwordHash String\n  createdAt    DateTime  @default(now())\n  sessions     Session[]\n}\n\nmodel Session {\n  id        String   @id // opaque randomUUID stored in the cookie\n  userId    String\n  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)\n  expiresAt DateTime\n  createdAt DateTime @default(now())\n}\n",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client\"\n  output   = \"../src/generated/prisma\"\n  runtime  = \"workerd\"\n}\n\ndatasource db {\n  provider = \"cockroachdb\"\n}\n\nmodel Todo {\n  id        String   @id @default(cuid())\n  title     String\n  createdAt DateTime @default(now())\n}\n\nmodel User {\n  id           String    @id @default(cuid())\n  email        String    @unique\n  passwordHash String\n  createdAt    DateTime  @default(now())\n  sessions     Session[]\n}\n\nmodel Session {\n  id        String   @id // opaque randomUUID stored in the cookie\n  userId    String\n  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)\n  expiresAt DateTime\n  createdAt DateTime @default(now())\n}\n",
   "runtimeDataModel": {
     "models": {},
     "enums": {},
@@ -37,22 +37,18 @@ config.parameterizationSchema = {
   strings: JSON.parse("[\"where\",\"Todo.findUnique\",\"Todo.findUniqueOrThrow\",\"orderBy\",\"cursor\",\"Todo.findFirst\",\"Todo.findFirstOrThrow\",\"Todo.findMany\",\"data\",\"Todo.createOne\",\"Todo.createMany\",\"Todo.createManyAndReturn\",\"Todo.updateOne\",\"Todo.updateMany\",\"Todo.updateManyAndReturn\",\"create\",\"update\",\"Todo.upsertOne\",\"Todo.deleteOne\",\"Todo.deleteMany\",\"having\",\"_count\",\"_min\",\"_max\",\"Todo.groupBy\",\"Todo.aggregate\",\"user\",\"sessions\",\"User.findUnique\",\"User.findUniqueOrThrow\",\"User.findFirst\",\"User.findFirstOrThrow\",\"User.findMany\",\"User.createOne\",\"User.createMany\",\"User.createManyAndReturn\",\"User.updateOne\",\"User.updateMany\",\"User.updateManyAndReturn\",\"User.upsertOne\",\"User.deleteOne\",\"User.deleteMany\",\"User.groupBy\",\"User.aggregate\",\"Session.findUnique\",\"Session.findUniqueOrThrow\",\"Session.findFirst\",\"Session.findFirstOrThrow\",\"Session.findMany\",\"Session.createOne\",\"Session.createMany\",\"Session.createManyAndReturn\",\"Session.updateOne\",\"Session.updateMany\",\"Session.updateManyAndReturn\",\"Session.upsertOne\",\"Session.deleteOne\",\"Session.deleteMany\",\"Session.groupBy\",\"Session.aggregate\",\"AND\",\"OR\",\"NOT\",\"id\",\"userId\",\"expiresAt\",\"createdAt\",\"equals\",\"in\",\"notIn\",\"lt\",\"lte\",\"gt\",\"gte\",\"not\",\"contains\",\"startsWith\",\"endsWith\",\"email\",\"passwordHash\",\"every\",\"some\",\"none\",\"title\",\"is\",\"isNot\",\"connectOrCreate\",\"upsert\",\"createMany\",\"set\",\"disconnect\",\"delete\",\"connect\",\"updateMany\",\"deleteMany\"]"),
   graph: "gQEaMAY8AABeADA9AAAEABA-AABeADA_AQAAAAFCQABZACFTAQBYACEBAAAAAQAgAQAAAAEAIAY8AABeADA9AAAEABA-AABeADA_AQBYACFCQABZACFTAQBYACEAAwAAAAQAIAMAAAUAMAQAAAEAIAMAAAAEACADAAAFADAEAAABACADAAAABAAgAwAABQAwBAAAAQAgAz8BAAAAAUJAAAAAAVMBAAAAAQEIAAAJACADPwEAAAABQkAAAAABUwEAAAABAQgAAAsAMAEIAAALADADPwEAYgAhQkAAYwAhUwEAYgAhAgAAAAEAIAgAAA4AIAM_AQBiACFCQABjACFTAQBiACECAAAABAAgCAAAEAAgAgAAAAQAIAgAABAAIAMAAAABACAPAAAJACAQAAAOACABAAAAAQAgAQAAAAQAIAMVAAB5ACAWAAB7ACAXAAB6ACAGPAAAXQAwPQAAFwAQPgAAXQAwPwEATwAhQkAAUAAhUwEATwAhAwAAAAQAIAMAABYAMBQAABcAIAMAAAAEACADAAAFADAEAAABACAIGwAAWgAgPAAAVwAwPQAAIgAQPgAAVwAwPwEAAAABQkAAWQAhTgEAAAABTwEAWAAhAQAAABoAIAgaAABcACA8AABbADA9AAAcABA-AABbADA_AQBYACFAAQBYACFBQABZACFCQABZACEBGgAAeAAgCBoAAFwAIDwAAFsAMD0AABwAED4AAFsAMD8BAAAAAUABAFgAIUFAAFkAIUJAAFkAIQMAAAAcACADAAAdADAEAAAeACABAAAAHAAgAQAAABoAIAgbAABaACA8AABXADA9AAAiABA-AABXADA_AQBYACFCQABZACFOAQBYACFPAQBYACEBGwAAdwAgAwAAACIAIAMAACMAMAQAABoAIAMAAAAiACADAAAjADAEAAAaACADAAAAIgAgAwAAIwAwBAAAGgAgBRsAAHYAID8BAAAAAUJAAAAAAU4BAAAAAU8BAAAAAQEIAAAnACAEPwEAAAABQkAAAAABTgEAAAABTwEAAAABAQgAACkAMAEIAAApADAFGwAAaQAgPwEAYgAhQkAAYwAhTgEAYgAhTwEAYgAhAgAAABoAIAgAACwAIAQ_AQBiACFCQABjACFOAQBiACFPAQBiACECAAAAIgAgCAAALgAgAgAAACIAIAgAAC4AIAMAAAAaACAPAAAnACAQAAAsACABAAAAGgAgAQAAACIAIAMVAABmACAWAABoACAXAABnACAHPAAAVgAwPQAANQAQPgAAVgAwPwEATwAhQkAAUAAhTgEATwAhTwEATwAhAwAAACIAIAMAADQAMBQAADUAIAMAAAAiACADAAAjADAEAAAaACABAAAAHgAgAQAAAB4AIAMAAAAcACADAAAdADAEAAAeACADAAAAHAAgAwAAHQAwBAAAHgAgAwAAABwAIAMAAB0AMAQAAB4AIAUaAABlACA_AQAAAAFAAQAAAAFBQAAAAAFCQAAAAAEBCAAAPQAgBD8BAAAAAUABAAAAAUFAAAAAAUJAAAAAAQEIAAA_ADABCAAAPwAwBRoAAGQAID8BAGIAIUABAGIAIUFAAGMAIUJAAGMAIQIAAAAeACAIAABCACAEPwEAYgAhQAEAYgAhQUAAYwAhQkAAYwAhAgAAABwAIAgAAEQAIAIAAAAcACAIAABEACADAAAAHgAgDwAAPQAgEAAAQgAgAQAAAB4AIAEAAAAcACADFQAAXwAgFgAAYQAgFwAAYAAgBzwAAE4AMD0AAEsAED4AAE4AMD8BAE8AIUABAE8AIUFAAFAAIUJAAFAAIQMAAAAcACADAABKADAUAABLACADAAAAHAAgAwAAHQAwBAAAHgAgBzwAAE4AMD0AAEsAED4AAE4AMD8BAE8AIUABAE8AIUFAAFAAIUJAAFAAIQ4VAABSACAWAABVACAXAABVACBDAQAAAAFEAQAAAARFAQAAAARGAQAAAAFHAQAAAAFIAQAAAAFJAQAAAAFKAQBUACFLAQAAAAFMAQAAAAFNAQAAAAELFQAAUgAgFgAAUwAgFwAAUwAgQ0AAAAABREAAAAAERUAAAAAERkAAAAABR0AAAAABSEAAAAABSUAAAAABSkAAUQAhCxUAAFIAIBYAAFMAIBcAAFMAIENAAAAAAURAAAAABEVAAAAABEZAAAAAAUdAAAAAAUhAAAAAAUlAAAAAAUpAAFEAIQhDAgAAAAFEAgAAAARFAgAAAARGAgAAAAFHAgAAAAFIAgAAAAFJAgAAAAFKAgBSACEIQ0AAAAABREAAAAAERUAAAAAERkAAAAABR0AAAAABSEAAAAABSUAAAAABSkAAUwAhDhUAAFIAIBYAAFUAIBcAAFUAIEMBAAAAAUQBAAAABEUBAAAABEYBAAAAAUcBAAAAAUgBAAAAAUkBAAAAAUoBAFQAIUsBAAAAAUwBAAAAAU0BAAAAAQtDAQAAAAFEAQAAAARFAQAAAARGAQAAAAFHAQAAAAFIAQAAAAFJAQAAAAFKAQBVACFLAQAAAAFMAQAAAAFNAQAAAAEHPAAAVgAwPQAANQAQPgAAVgAwPwEATwAhQkAAUAAhTgEATwAhTwEATwAhCBsAAFoAIDwAAFcAMD0AACIAED4AAFcAMD8BAFgAIUJAAFkAIU4BAFgAIU8BAFgAIQtDAQAAAAFEAQAAAARFAQAAAARGAQAAAAFHAQAAAAFIAQAAAAFJAQAAAAFKAQBVACFLAQAAAAFMAQAAAAFNAQAAAAEIQ0AAAAABREAAAAAERUAAAAAERkAAAAABR0AAAAABSEAAAAABSUAAAAABSkAAUwAhA1AAABwAIFEAABwAIFIAABwAIAgaAABcACA8AABbADA9AAAcABA-AABbADA_AQBYACFAAQBYACFBQABZACFCQABZACEKGwAAWgAgPAAAVwAwPQAAIgAQPgAAVwAwPwEAWAAhQkAAWQAhTgEAWAAhTwEAWAAhVAAAIgAgVQAAIgAgBjwAAF0AMD0AABcAED4AAF0AMD8BAE8AIUJAAFAAIVMBAE8AIQY8AABeADA9AAAEABA-AABeADA_AQBYACFCQABZACFTAQBYACEAAAABWQEAAAABAVlAAAAAAQUPAAB9ACAQAACAAQAgVgAAfgAgVwAAfwAgXAAAGgAgAw8AAH0AIFYAAH4AIFwAABoAIAAAAAsPAABqADAQAABvADBWAABrADBXAABsADBYAABtACBZAABuADBaAABuADBbAABuADBcAABuADBdAABwADBeAABxADADPwEAAAABQUAAAAABQkAAAAABAgAAAB4AIA8AAHUAIAMAAAAeACAPAAB1ACAQAAB0ACABCAAAfAAwCBoAAFwAIDwAAFsAMD0AABwAED4AAFsAMD8BAAAAAUABAFgAIUFAAFkAIUJAAFkAIQIAAAAeACAIAAB0ACACAAAAcgAgCAAAcwAgBzwAAHEAMD0AAHIAED4AAHEAMD8BAFgAIUABAFgAIUFAAFkAIUJAAFkAIQc8AABxADA9AAByABA-AABxADA_AQBYACFAAQBYACFBQABZACFCQABZACEDPwEAYgAhQUAAYwAhQkAAYwAhAz8BAGIAIUFAAGMAIUJAAGMAIQM_AQAAAAFBQAAAAAFCQAAAAAEEDwAAagAwVgAAawAwWAAAbQAgXAAAbgAwAAEbAAB3ACAAAAADPwEAAAABQUAAAAABQkAAAAABBD8BAAAAAUJAAAAAAU4BAAAAAU8BAAAAAQIAAAAaACAPAAB9ACADAAAAIgAgDwAAfQAgEAAAgQEAIAYAAAAiACAIAACBAQAgPwEAYgAhQkAAYwAhTgEAYgAhTwEAYgAhBD8BAGIAIUJAAGMAIU4BAGIAIU8BAGIAIQAAAAADFQAGFgAHFwAIAAAAAxUABhYABxcACAIVAAwbHwsBGgAKARsgAAAAAxUAEBYAERcAEgAAAAMVABAWABEXABIBGgAKARoACgMVABcWABgXABkAAAADFQAXFgAYFwAZAQIBAgMBBQYBBgcBBwgBCQoBCgwCCw0DDA8BDRECDhIEERMBEhQBExUCGBgFGRkJHBsKHSEKHiQKHyUKICYKISgKIioCIysNJC0KJS8CJjAOJzEKKDIKKTMCKjYPKzcTLDgLLTkLLjoLLzsLMDwLMT4LMkACM0EUNEMLNUUCNkYVN0cLOEgLOUkCOkwWO00a"
 }
-
-async function decodeBase64AsWasm(wasmBase64: string): Promise<WebAssembly.Module> {
-  const { Buffer } = await import('node:buffer')
-  const wasmArray = Buffer.from(wasmBase64, 'base64')
-  return new WebAssembly.Module(wasmArray)
-}
-
 config.compilerWasm = {
-  getRuntime: async () => await import("@prisma/client/runtime/query_compiler_fast_bg.cockroachdb.mjs"),
+  getRuntime: async () => await import("./query_compiler_fast_bg.js"),
 
   getQueryCompilerWasmModule: async () => {
-    const { wasm } = await import("@prisma/client/runtime/query_compiler_fast_bg.cockroachdb.wasm-base64.mjs")
-    return await decodeBase64AsWasm(wasm)
+    const { default: module } = await import("./query_compiler_fast_bg.wasm?module")
+    return module
   },
 
   importName: "./query_compiler_fast_bg.js"
+}
+if (typeof globalThis !== 'undefined' && globalThis['DEBUG'] || (typeof process !== 'undefined' && process.env && process.env.DEBUG) || undefined) {
+  runtime.Debug.enable(typeof globalThis !== 'undefined' && globalThis['DEBUG'] || (typeof process !== 'undefined' && process.env && process.env.DEBUG) || undefined)
 }
 
 

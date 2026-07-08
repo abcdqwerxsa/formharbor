@@ -1,7 +1,10 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "tanstack-start-app",
+  "name": "formharbor",
   "compatibility_date": "2025-09-02",
-  "compatibility_flags": ["nodejs_compat"],
-  "main": "@tanstack/react-start/server-entry"
+  "compatibility_flags": ["nodejs_compat_v2"],
+  "main": "@tanstack/react-start/server-entry",
+  "hyperdrive": [
+    { "binding": "HYPERDRIVE", "id": "9b76e2ec9ebd4e1baaa99a508b2d5f68" }
+  ]
 }

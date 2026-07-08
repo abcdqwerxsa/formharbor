@@ -14,7 +14,8 @@ const credentials = z.object({ email: z.string().email(), password: z.string().m
 export const register = createServerFn({ method: 'POST' })
   .validator(credentials)
   .handler(async ({ data }) => {
-    const { prisma } = await import('#/db')
+    const { getPrisma } = await import('#/db')
+    const prisma = await getPrisma()
     const { createSession } = await import('./session')
     const existing = await prisma.user.findUnique({ where: { email: data.email } })
     if (existing) throw new Error('Email already registered')
@@ -29,7 +30,8 @@ export const register = createServerFn({ method: 'POST' })
 export const login = createServerFn({ method: 'POST' })
   .validator(credentials)
   .handler(async ({ data }) => {
-    const { prisma } = await import('#/db')
+    const { getPrisma } = await import('#/db')
+    const prisma = await getPrisma()
     const { createSession } = await import('./session')
     const user = await prisma.user.findUnique({ where: { email: data.email } })
     const ok = user ? await verifyPassword(data.password, user.passwordHash) : false

@@ -23,5 +23,6 @@ export default defineConfig({
     // hit a read-after-write FK race (Session_userId_fkey violated) when one
     // file's session cleanup runs concurrently with another's insert.
     fileParallelism: false,
+    testTimeout: 30_000, // remote CockroachDB is slow on cold connections
   },
 })

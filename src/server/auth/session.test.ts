@@ -1,9 +1,10 @@
 import { describe, it, expect, afterEach } from 'vitest'
-import { prisma } from '#/db'
+import { getPrisma } from '#/db'
 import { hashPassword } from './password'
 import { createSession, getSessionWithUser, deleteSession } from './session'
 
 afterEach(async () => {
+  const prisma = await getPrisma()
   await prisma.session.deleteMany({})
   await prisma.user.deleteMany({})
 })
@@ -13,6 +14,7 @@ describe('session db', () => {
   it(
     'creates, reads, and deletes a session for a user',
     async () => {
+      const prisma = await getPrisma()
       const user = await prisma.user.create({
         data: { email: `t${Math.random()}@x.test`, passwordHash: await hashPassword('x') },
       })
