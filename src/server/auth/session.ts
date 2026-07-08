@@ -1,3 +1,4 @@
+import '@tanstack/react-start/server-only'
 import { prisma } from '#/db'
 
 const ONE_DAY_MS = 1000 * 60 * 60 * 24
