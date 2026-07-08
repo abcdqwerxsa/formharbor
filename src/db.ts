@@ -1,3 +1,6 @@
+// Server-only: this module pulls in @prisma/adapter-pg (node 'pg' -> Buffer),
+// which must never reach the client bundle.
+import '@tanstack/react-start/server-only'
 import { neon } from '@neondatabase/serverless'
 import { PrismaPg } from '@prisma/adapter-pg'
 import { PrismaClient } from '#/generated/prisma/client'
