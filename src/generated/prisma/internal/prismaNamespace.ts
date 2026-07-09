@@ -388,7 +388,8 @@ export const ModelName = {
   User: 'User',
   Session: 'Session',
   Organization: 'Organization',
-  Membership: 'Membership'
+  Membership: 'Membership',
+  Form: 'Form'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -404,7 +405,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "todo" | "user" | "session" | "organization" | "membership"
+    modelProps: "todo" | "user" | "session" | "organization" | "membership" | "form"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -778,6 +779,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Form: {
+      payload: Prisma.$FormPayload<ExtArgs>
+      fields: Prisma.FormFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.FormFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FormPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.FormFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FormPayload>
+        }
+        findFirst: {
+          args: Prisma.FormFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FormPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.FormFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FormPayload>
+        }
+        findMany: {
+          args: Prisma.FormFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FormPayload>[]
+        }
+        create: {
+          args: Prisma.FormCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FormPayload>
+        }
+        createMany: {
+          args: Prisma.FormCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.FormCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FormPayload>[]
+        }
+        delete: {
+          args: Prisma.FormDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FormPayload>
+        }
+        update: {
+          args: Prisma.FormUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FormPayload>
+        }
+        deleteMany: {
+          args: Prisma.FormDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.FormUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.FormUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FormPayload>[]
+        }
+        upsert: {
+          args: Prisma.FormUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FormPayload>
+        }
+        aggregate: {
+          args: Prisma.FormAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateForm>
+        }
+        groupBy: {
+          args: Prisma.FormGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FormGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.FormCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FormCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -864,6 +939,21 @@ export const MembershipScalarFieldEnum = {
 export type MembershipScalarFieldEnum = (typeof MembershipScalarFieldEnum)[keyof typeof MembershipScalarFieldEnum]
 
 
+export const FormScalarFieldEnum = {
+  id: 'id',
+  orgId: 'orgId',
+  name: 'name',
+  slug: 'slug',
+  status: 'status',
+  fields: 'fields',
+  settings: 'settings',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type FormScalarFieldEnum = (typeof FormScalarFieldEnum)[keyof typeof FormScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -872,12 +962,28 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
 export const QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
 
@@ -925,6 +1031,34 @@ export type EnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
  * Reference to a field of type 'Role[]'
  */
 export type ListEnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role[]'>
+    
+
+
+/**
+ * Reference to a field of type 'FormStatus'
+ */
+export type EnumFormStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FormStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'FormStatus[]'
+ */
+export type ListEnumFormStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FormStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Json'
+ */
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+/**
+ * Reference to a field of type 'QueryMode'
+ */
+export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -1056,6 +1190,7 @@ export type GlobalOmitConfig = {
   session?: Prisma.SessionOmit
   organization?: Prisma.OrganizationOmit
   membership?: Prisma.MembershipOmit
+  form?: Prisma.FormOmit
 }
 
 /* Types for Logging */

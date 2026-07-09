@@ -16,3 +16,12 @@ export const Role = {
 } as const
 
 export type Role = (typeof Role)[keyof typeof Role]
+
+
+export const FormStatus = {
+  DRAFT: 'DRAFT',
+  OPEN: 'OPEN',
+  CLOSED: 'CLOSED'
+} as const
+
+export type FormStatus = (typeof FormStatus)[keyof typeof FormStatus]

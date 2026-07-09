@@ -42,3 +42,8 @@ export type Organization = Prisma.OrganizationModel
  * 
  */
 export type Membership = Prisma.MembershipModel
+/**
+ * Model Form
+ * 
+ */
+export type Form = Prisma.FormModel
