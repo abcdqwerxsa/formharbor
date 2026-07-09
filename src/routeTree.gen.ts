@@ -18,9 +18,11 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedAppRouteImport } from './routes/_authenticated/app'
+import { Route as FOrgSlugFormSlugRouteImport } from './routes/f/$orgSlug/$formSlug'
 import { Route as DemoSentryTestingRouteImport } from './routes/demo/sentry.testing'
 import { Route as AuthenticatedAppFormsIndexRouteImport } from './routes/_authenticated/app/forms/index'
 import { Route as AuthenticatedAppFormsNewRouteImport } from './routes/_authenticated/app/forms/new'
+import { Route as AuthenticatedAppFormsFormIdSubmissionsRouteImport } from './routes/_authenticated/app/forms/$formId/submissions'
 import { Route as AuthenticatedAppFormsFormIdEditRouteImport } from './routes/_authenticated/app/forms/$formId/edit'
 
 const UnkeyRoute = UnkeyRouteImport.update({
@@ -67,6 +69,11 @@ const AuthenticatedAppRoute = AuthenticatedAppRouteImport.update({
   path: '/app',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const FOrgSlugFormSlugRoute = FOrgSlugFormSlugRouteImport.update({
+  id: '/f/$orgSlug/$formSlug',
+  path: '/f/$orgSlug/$formSlug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DemoSentryTestingRoute = DemoSentryTestingRouteImport.update({
   id: '/demo/sentry/testing',
   path: '/demo/sentry/testing',
@@ -82,6 +89,12 @@ const AuthenticatedAppFormsNewRoute =
   AuthenticatedAppFormsNewRouteImport.update({
     id: '/forms/new',
     path: '/forms/new',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppFormsFormIdSubmissionsRoute =
+  AuthenticatedAppFormsFormIdSubmissionsRouteImport.update({
+    id: '/forms/$formId/submissions',
+    path: '/forms/$formId/submissions',
     getParentRoute: () => AuthenticatedAppRoute,
   } as any)
 const AuthenticatedAppFormsFormIdEditRoute =
@@ -101,9 +114,11 @@ export interface FileRoutesByFullPath {
   '/unkey': typeof UnkeyRoute
   '/app': typeof AuthenticatedAppRouteWithChildren
   '/demo/sentry/testing': typeof DemoSentryTestingRoute
+  '/f/$orgSlug/$formSlug': typeof FOrgSlugFormSlugRoute
   '/app/forms/new': typeof AuthenticatedAppFormsNewRoute
   '/app/forms/': typeof AuthenticatedAppFormsIndexRoute
   '/app/forms/$formId/edit': typeof AuthenticatedAppFormsFormIdEditRoute
+  '/app/forms/$formId/submissions': typeof AuthenticatedAppFormsFormIdSubmissionsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -115,9 +130,11 @@ export interface FileRoutesByTo {
   '/unkey': typeof UnkeyRoute
   '/app': typeof AuthenticatedAppRouteWithChildren
   '/demo/sentry/testing': typeof DemoSentryTestingRoute
+  '/f/$orgSlug/$formSlug': typeof FOrgSlugFormSlugRoute
   '/app/forms/new': typeof AuthenticatedAppFormsNewRoute
   '/app/forms': typeof AuthenticatedAppFormsIndexRoute
   '/app/forms/$formId/edit': typeof AuthenticatedAppFormsFormIdEditRoute
+  '/app/forms/$formId/submissions': typeof AuthenticatedAppFormsFormIdSubmissionsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -131,9 +148,11 @@ export interface FileRoutesById {
   '/unkey': typeof UnkeyRoute
   '/_authenticated/app': typeof AuthenticatedAppRouteWithChildren
   '/demo/sentry/testing': typeof DemoSentryTestingRoute
+  '/f/$orgSlug/$formSlug': typeof FOrgSlugFormSlugRoute
   '/_authenticated/app/forms/new': typeof AuthenticatedAppFormsNewRoute
   '/_authenticated/app/forms/': typeof AuthenticatedAppFormsIndexRoute
   '/_authenticated/app/forms/$formId/edit': typeof AuthenticatedAppFormsFormIdEditRoute
+  '/_authenticated/app/forms/$formId/submissions': typeof AuthenticatedAppFormsFormIdSubmissionsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -147,9 +166,11 @@ export interface FileRouteTypes {
     | '/unkey'
     | '/app'
     | '/demo/sentry/testing'
+    | '/f/$orgSlug/$formSlug'
     | '/app/forms/new'
     | '/app/forms/'
     | '/app/forms/$formId/edit'
+    | '/app/forms/$formId/submissions'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -161,9 +182,11 @@ export interface FileRouteTypes {
     | '/unkey'
     | '/app'
     | '/demo/sentry/testing'
+    | '/f/$orgSlug/$formSlug'
     | '/app/forms/new'
     | '/app/forms'
     | '/app/forms/$formId/edit'
+    | '/app/forms/$formId/submissions'
   id:
     | '__root__'
     | '/'
@@ -176,9 +199,11 @@ export interface FileRouteTypes {
     | '/unkey'
     | '/_authenticated/app'
     | '/demo/sentry/testing'
+    | '/f/$orgSlug/$formSlug'
     | '/_authenticated/app/forms/new'
     | '/_authenticated/app/forms/'
     | '/_authenticated/app/forms/$formId/edit'
+    | '/_authenticated/app/forms/$formId/submissions'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -191,6 +216,7 @@ export interface RootRouteChildren {
   SerpapiRoute: typeof SerpapiRoute
   UnkeyRoute: typeof UnkeyRoute
   DemoSentryTestingRoute: typeof DemoSentryTestingRoute
+  FOrgSlugFormSlugRoute: typeof FOrgSlugFormSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -258,6 +284,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/f/$orgSlug/$formSlug': {
+      id: '/f/$orgSlug/$formSlug'
+      path: '/f/$orgSlug/$formSlug'
+      fullPath: '/f/$orgSlug/$formSlug'
+      preLoaderRoute: typeof FOrgSlugFormSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/demo/sentry/testing': {
       id: '/demo/sentry/testing'
       path: '/demo/sentry/testing'
@@ -279,6 +312,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppFormsNewRouteImport
       parentRoute: typeof AuthenticatedAppRoute
     }
+    '/_authenticated/app/forms/$formId/submissions': {
+      id: '/_authenticated/app/forms/$formId/submissions'
+      path: '/forms/$formId/submissions'
+      fullPath: '/app/forms/$formId/submissions'
+      preLoaderRoute: typeof AuthenticatedAppFormsFormIdSubmissionsRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
     '/_authenticated/app/forms/$formId/edit': {
       id: '/_authenticated/app/forms/$formId/edit'
       path: '/forms/$formId/edit'
@@ -293,12 +333,15 @@ interface AuthenticatedAppRouteChildren {
   AuthenticatedAppFormsNewRoute: typeof AuthenticatedAppFormsNewRoute
   AuthenticatedAppFormsIndexRoute: typeof AuthenticatedAppFormsIndexRoute
   AuthenticatedAppFormsFormIdEditRoute: typeof AuthenticatedAppFormsFormIdEditRoute
+  AuthenticatedAppFormsFormIdSubmissionsRoute: typeof AuthenticatedAppFormsFormIdSubmissionsRoute
 }
 
 const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
   AuthenticatedAppFormsNewRoute: AuthenticatedAppFormsNewRoute,
   AuthenticatedAppFormsIndexRoute: AuthenticatedAppFormsIndexRoute,
   AuthenticatedAppFormsFormIdEditRoute: AuthenticatedAppFormsFormIdEditRoute,
+  AuthenticatedAppFormsFormIdSubmissionsRoute:
+    AuthenticatedAppFormsFormIdSubmissionsRoute,
 }
 
 const AuthenticatedAppRouteWithChildren =
@@ -326,6 +369,7 @@ const rootRouteChildren: RootRouteChildren = {
   SerpapiRoute: SerpapiRoute,
   UnkeyRoute: UnkeyRoute,
   DemoSentryTestingRoute: DemoSentryTestingRoute,
+  FOrgSlugFormSlugRoute: FOrgSlugFormSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
