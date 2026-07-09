@@ -207,6 +207,7 @@ export type FormWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Form"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Form"> | Date | string
   org?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
+  submissions?: Prisma.SubmissionListRelationFilter
 }
 
 export type FormOrderByWithRelationInput = {
@@ -220,6 +221,7 @@ export type FormOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   org?: Prisma.OrganizationOrderByWithRelationInput
+  submissions?: Prisma.SubmissionOrderByRelationAggregateInput
 }
 
 export type FormWhereUniqueInput = Prisma.AtLeast<{
@@ -237,6 +239,7 @@ export type FormWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Form"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Form"> | Date | string
   org?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
+  submissions?: Prisma.SubmissionListRelationFilter
 }, "id" | "orgId_slug">
 
 export type FormOrderByWithAggregationInput = {
@@ -279,6 +282,7 @@ export type FormCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   org: Prisma.OrganizationCreateNestedOneWithoutFormsInput
+  submissions?: Prisma.SubmissionCreateNestedManyWithoutFormInput
 }
 
 export type FormUncheckedCreateInput = {
@@ -291,6 +295,7 @@ export type FormUncheckedCreateInput = {
   settings: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  submissions?: Prisma.SubmissionUncheckedCreateNestedManyWithoutFormInput
 }
 
 export type FormUpdateInput = {
@@ -303,6 +308,7 @@ export type FormUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   org?: Prisma.OrganizationUpdateOneRequiredWithoutFormsNestedInput
+  submissions?: Prisma.SubmissionUpdateManyWithoutFormNestedInput
 }
 
 export type FormUncheckedUpdateInput = {
@@ -315,6 +321,7 @@ export type FormUncheckedUpdateInput = {
   settings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  submissions?: Prisma.SubmissionUncheckedUpdateManyWithoutFormNestedInput
 }
 
 export type FormCreateManyInput = {
@@ -399,6 +406,11 @@ export type FormMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
+export type FormScalarRelationFilter = {
+  is?: Prisma.FormWhereInput
+  isNot?: Prisma.FormWhereInput
+}
+
 export type FormCreateNestedManyWithoutOrgInput = {
   create?: Prisma.XOR<Prisma.FormCreateWithoutOrgInput, Prisma.FormUncheckedCreateWithoutOrgInput> | Prisma.FormCreateWithoutOrgInput[] | Prisma.FormUncheckedCreateWithoutOrgInput[]
   connectOrCreate?: Prisma.FormCreateOrConnectWithoutOrgInput | Prisma.FormCreateOrConnectWithoutOrgInput[]
@@ -445,6 +457,20 @@ export type EnumFormStatusFieldUpdateOperationsInput = {
   set?: $Enums.FormStatus
 }
 
+export type FormCreateNestedOneWithoutSubmissionsInput = {
+  create?: Prisma.XOR<Prisma.FormCreateWithoutSubmissionsInput, Prisma.FormUncheckedCreateWithoutSubmissionsInput>
+  connectOrCreate?: Prisma.FormCreateOrConnectWithoutSubmissionsInput
+  connect?: Prisma.FormWhereUniqueInput
+}
+
+export type FormUpdateOneRequiredWithoutSubmissionsNestedInput = {
+  create?: Prisma.XOR<Prisma.FormCreateWithoutSubmissionsInput, Prisma.FormUncheckedCreateWithoutSubmissionsInput>
+  connectOrCreate?: Prisma.FormCreateOrConnectWithoutSubmissionsInput
+  upsert?: Prisma.FormUpsertWithoutSubmissionsInput
+  connect?: Prisma.FormWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.FormUpdateToOneWithWhereWithoutSubmissionsInput, Prisma.FormUpdateWithoutSubmissionsInput>, Prisma.FormUncheckedUpdateWithoutSubmissionsInput>
+}
+
 export type FormCreateWithoutOrgInput = {
   id?: string
   name: string
@@ -454,6 +480,7 @@ export type FormCreateWithoutOrgInput = {
   settings: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  submissions?: Prisma.SubmissionCreateNestedManyWithoutFormInput
 }
 
 export type FormUncheckedCreateWithoutOrgInput = {
@@ -465,6 +492,7 @@ export type FormUncheckedCreateWithoutOrgInput = {
   settings: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  submissions?: Prisma.SubmissionUncheckedCreateNestedManyWithoutFormInput
 }
 
 export type FormCreateOrConnectWithoutOrgInput = {
@@ -508,6 +536,70 @@ export type FormScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Form"> | Date | string
 }
 
+export type FormCreateWithoutSubmissionsInput = {
+  id?: string
+  name: string
+  slug: string
+  status?: $Enums.FormStatus
+  fields: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  settings: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  org: Prisma.OrganizationCreateNestedOneWithoutFormsInput
+}
+
+export type FormUncheckedCreateWithoutSubmissionsInput = {
+  id?: string
+  orgId: string
+  name: string
+  slug: string
+  status?: $Enums.FormStatus
+  fields: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  settings: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type FormCreateOrConnectWithoutSubmissionsInput = {
+  where: Prisma.FormWhereUniqueInput
+  create: Prisma.XOR<Prisma.FormCreateWithoutSubmissionsInput, Prisma.FormUncheckedCreateWithoutSubmissionsInput>
+}
+
+export type FormUpsertWithoutSubmissionsInput = {
+  update: Prisma.XOR<Prisma.FormUpdateWithoutSubmissionsInput, Prisma.FormUncheckedUpdateWithoutSubmissionsInput>
+  create: Prisma.XOR<Prisma.FormCreateWithoutSubmissionsInput, Prisma.FormUncheckedCreateWithoutSubmissionsInput>
+  where?: Prisma.FormWhereInput
+}
+
+export type FormUpdateToOneWithWhereWithoutSubmissionsInput = {
+  where?: Prisma.FormWhereInput
+  data: Prisma.XOR<Prisma.FormUpdateWithoutSubmissionsInput, Prisma.FormUncheckedUpdateWithoutSubmissionsInput>
+}
+
+export type FormUpdateWithoutSubmissionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumFormStatusFieldUpdateOperationsInput | $Enums.FormStatus
+  fields?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  settings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  org?: Prisma.OrganizationUpdateOneRequiredWithoutFormsNestedInput
+}
+
+export type FormUncheckedUpdateWithoutSubmissionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  orgId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumFormStatusFieldUpdateOperationsInput | $Enums.FormStatus
+  fields?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  settings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 export type FormCreateManyOrgInput = {
   id?: string
   name: string
@@ -528,6 +620,7 @@ export type FormUpdateWithoutOrgInput = {
   settings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  submissions?: Prisma.SubmissionUpdateManyWithoutFormNestedInput
 }
 
 export type FormUncheckedUpdateWithoutOrgInput = {
@@ -539,6 +632,7 @@ export type FormUncheckedUpdateWithoutOrgInput = {
   settings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  submissions?: Prisma.SubmissionUncheckedUpdateManyWithoutFormNestedInput
 }
 
 export type FormUncheckedUpdateManyWithoutOrgInput = {
@@ -553,6 +647,35 @@ export type FormUncheckedUpdateManyWithoutOrgInput = {
 }
 
 
+/**
+ * Count Type FormCountOutputType
+ */
+
+export type FormCountOutputType = {
+  submissions: number
+}
+
+export type FormCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  submissions?: boolean | FormCountOutputTypeCountSubmissionsArgs
+}
+
+/**
+ * FormCountOutputType without action
+ */
+export type FormCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the FormCountOutputType
+   */
+  select?: Prisma.FormCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * FormCountOutputType without action
+ */
+export type FormCountOutputTypeCountSubmissionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SubmissionWhereInput
+}
+
 
 export type FormSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -565,6 +688,8 @@ export type FormSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   createdAt?: boolean
   updatedAt?: boolean
   org?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
+  submissions?: boolean | Prisma.Form$submissionsArgs<ExtArgs>
+  _count?: boolean | Prisma.FormCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["form"]>
 
 export type FormSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -608,6 +733,8 @@ export type FormSelectScalar = {
 export type FormOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "orgId" | "name" | "slug" | "status" | "fields" | "settings" | "createdAt" | "updatedAt", ExtArgs["result"]["form"]>
 export type FormInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   org?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
+  submissions?: boolean | Prisma.Form$submissionsArgs<ExtArgs>
+  _count?: boolean | Prisma.FormCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type FormIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   org?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
@@ -620,6 +747,7 @@ export type $FormPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   name: "Form"
   objects: {
     org: Prisma.$OrganizationPayload<ExtArgs>
+    submissions: Prisma.$SubmissionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1026,6 +1154,7 @@ readonly fields: FormFieldRefs;
 export interface Prisma__FormClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   org<T extends Prisma.OrganizationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationDefaultArgs<ExtArgs>>): Prisma.Prisma__OrganizationClient<runtime.Types.Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  submissions<T extends Prisma.Form$submissionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Form$submissionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SubmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1462,6 +1591,30 @@ export type FormDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Limit how many Forms to delete.
    */
   limit?: number
+}
+
+/**
+ * Form.submissions
+ */
+export type Form$submissionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Submission
+   */
+  select?: Prisma.SubmissionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Submission
+   */
+  omit?: Prisma.SubmissionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SubmissionInclude<ExtArgs> | null
+  where?: Prisma.SubmissionWhereInput
+  orderBy?: Prisma.SubmissionOrderByWithRelationInput | Prisma.SubmissionOrderByWithRelationInput[]
+  cursor?: Prisma.SubmissionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SubmissionScalarFieldEnum | Prisma.SubmissionScalarFieldEnum[]
 }
 
 /**

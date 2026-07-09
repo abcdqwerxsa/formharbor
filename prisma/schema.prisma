@@ -68,6 +68,7 @@ model Form {
   settings  Json
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
+  submissions Submission[]
 
   @@unique([orgId, slug])
   @@index([orgId])
@@ -77,4 +78,18 @@ enum FormStatus {
   DRAFT
   OPEN
   CLOSED
+}
+
+model Submission {
+  id        String   @id @default(cuid())
+  formId    String
+  orgId     String
+  data      Json
+  ip        String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  form      Form     @relation(fields: [formId], references: [id], onDelete: Cascade)
+
+  @@index([formId])
+  @@index([orgId])
 }

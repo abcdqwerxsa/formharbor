@@ -68,3 +68,8 @@ export type Membership = Prisma.MembershipModel
  * 
  */
 export type Form = Prisma.FormModel
+/**
+ * Model Submission
+ * 
+ */
+export type Submission = Prisma.SubmissionModel
