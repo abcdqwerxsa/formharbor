@@ -19,6 +19,9 @@ import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedAppRouteImport } from './routes/_authenticated/app'
 import { Route as DemoSentryTestingRouteImport } from './routes/demo/sentry.testing'
+import { Route as AuthenticatedAppFormsIndexRouteImport } from './routes/_authenticated/app/forms/index'
+import { Route as AuthenticatedAppFormsNewRouteImport } from './routes/_authenticated/app/forms/new'
+import { Route as AuthenticatedAppFormsFormIdEditRouteImport } from './routes/_authenticated/app/forms/$formId/edit'
 
 const UnkeyRoute = UnkeyRouteImport.update({
   id: '/unkey',
@@ -69,6 +72,24 @@ const DemoSentryTestingRoute = DemoSentryTestingRouteImport.update({
   path: '/demo/sentry/testing',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAppFormsIndexRoute =
+  AuthenticatedAppFormsIndexRouteImport.update({
+    id: '/forms/',
+    path: '/forms/',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppFormsNewRoute =
+  AuthenticatedAppFormsNewRouteImport.update({
+    id: '/forms/new',
+    path: '/forms/new',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppFormsFormIdEditRoute =
+  AuthenticatedAppFormsFormIdEditRouteImport.update({
+    id: '/forms/$formId/edit',
+    path: '/forms/$formId/edit',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -78,8 +99,11 @@ export interface FileRoutesByFullPath {
   '/register': typeof RegisterRoute
   '/serpapi': typeof SerpapiRoute
   '/unkey': typeof UnkeyRoute
-  '/app': typeof AuthenticatedAppRoute
+  '/app': typeof AuthenticatedAppRouteWithChildren
   '/demo/sentry/testing': typeof DemoSentryTestingRoute
+  '/app/forms/new': typeof AuthenticatedAppFormsNewRoute
+  '/app/forms/': typeof AuthenticatedAppFormsIndexRoute
+  '/app/forms/$formId/edit': typeof AuthenticatedAppFormsFormIdEditRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -89,8 +113,11 @@ export interface FileRoutesByTo {
   '/register': typeof RegisterRoute
   '/serpapi': typeof SerpapiRoute
   '/unkey': typeof UnkeyRoute
-  '/app': typeof AuthenticatedAppRoute
+  '/app': typeof AuthenticatedAppRouteWithChildren
   '/demo/sentry/testing': typeof DemoSentryTestingRoute
+  '/app/forms/new': typeof AuthenticatedAppFormsNewRoute
+  '/app/forms': typeof AuthenticatedAppFormsIndexRoute
+  '/app/forms/$formId/edit': typeof AuthenticatedAppFormsFormIdEditRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -102,8 +129,11 @@ export interface FileRoutesById {
   '/register': typeof RegisterRoute
   '/serpapi': typeof SerpapiRoute
   '/unkey': typeof UnkeyRoute
-  '/_authenticated/app': typeof AuthenticatedAppRoute
+  '/_authenticated/app': typeof AuthenticatedAppRouteWithChildren
   '/demo/sentry/testing': typeof DemoSentryTestingRoute
+  '/_authenticated/app/forms/new': typeof AuthenticatedAppFormsNewRoute
+  '/_authenticated/app/forms/': typeof AuthenticatedAppFormsIndexRoute
+  '/_authenticated/app/forms/$formId/edit': typeof AuthenticatedAppFormsFormIdEditRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -117,6 +147,9 @@ export interface FileRouteTypes {
     | '/unkey'
     | '/app'
     | '/demo/sentry/testing'
+    | '/app/forms/new'
+    | '/app/forms/'
+    | '/app/forms/$formId/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -128,6 +161,9 @@ export interface FileRouteTypes {
     | '/unkey'
     | '/app'
     | '/demo/sentry/testing'
+    | '/app/forms/new'
+    | '/app/forms'
+    | '/app/forms/$formId/edit'
   id:
     | '__root__'
     | '/'
@@ -140,6 +176,9 @@ export interface FileRouteTypes {
     | '/unkey'
     | '/_authenticated/app'
     | '/demo/sentry/testing'
+    | '/_authenticated/app/forms/new'
+    | '/_authenticated/app/forms/'
+    | '/_authenticated/app/forms/$formId/edit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -226,15 +265,51 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DemoSentryTestingRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/app/forms/': {
+      id: '/_authenticated/app/forms/'
+      path: '/forms'
+      fullPath: '/app/forms/'
+      preLoaderRoute: typeof AuthenticatedAppFormsIndexRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/forms/new': {
+      id: '/_authenticated/app/forms/new'
+      path: '/forms/new'
+      fullPath: '/app/forms/new'
+      preLoaderRoute: typeof AuthenticatedAppFormsNewRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/forms/$formId/edit': {
+      id: '/_authenticated/app/forms/$formId/edit'
+      path: '/forms/$formId/edit'
+      fullPath: '/app/forms/$formId/edit'
+      preLoaderRoute: typeof AuthenticatedAppFormsFormIdEditRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
   }
 }
 
+interface AuthenticatedAppRouteChildren {
+  AuthenticatedAppFormsNewRoute: typeof AuthenticatedAppFormsNewRoute
+  AuthenticatedAppFormsIndexRoute: typeof AuthenticatedAppFormsIndexRoute
+  AuthenticatedAppFormsFormIdEditRoute: typeof AuthenticatedAppFormsFormIdEditRoute
+}
+
+const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
+  AuthenticatedAppFormsNewRoute: AuthenticatedAppFormsNewRoute,
+  AuthenticatedAppFormsIndexRoute: AuthenticatedAppFormsIndexRoute,
+  AuthenticatedAppFormsFormIdEditRoute: AuthenticatedAppFormsFormIdEditRoute,
+}
+
+const AuthenticatedAppRouteWithChildren =
+  AuthenticatedAppRoute._addFileChildren(AuthenticatedAppRouteChildren)
+
 interface AuthenticatedRouteChildren {
-  AuthenticatedAppRoute: typeof AuthenticatedAppRoute
+  AuthenticatedAppRoute: typeof AuthenticatedAppRouteWithChildren
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
-  AuthenticatedAppRoute: AuthenticatedAppRoute,
+  AuthenticatedAppRoute: AuthenticatedAppRouteWithChildren,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
