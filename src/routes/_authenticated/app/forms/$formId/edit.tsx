@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { createFileRoute, useNavigate, Link } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
 import { getOrgForm, updateOrgForm, deleteOrgForm } from '#/server/forms/functions'
 import { FIELD_TYPES } from '#/forms/schema'
@@ -128,6 +128,7 @@ function FormEditor() {
         <div className="mt-6 flex items-center gap-3">
           <button className="demo-button" type="button" onClick={onSave}>Save</button>
           <button className="demo-button" type="button" onClick={onDelete}>Delete form</button>
+          <Link to="/app/forms/$formId/submissions" params={{ formId }} className="text-sm text-[var(--lagoon-deep)] underline">Submissions</Link>
         </div>
       </section>
     </main>
