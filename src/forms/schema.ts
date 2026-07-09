@@ -58,3 +58,55 @@ export const updateFormInput = z.object({
 
 export type CreateFormInput = z.infer<typeof createFormInput>
 export type UpdateFormInput = z.infer<typeof updateFormInput>
+
+/**
+ * Build a zod schema from a Field[] for validating submission values.
+ * - required strings/arrays must be non-empty; optional fields may be absent.
+ * - number is coerced; email validated; select/radio → enum(options);
+ *   checkbox → array(enum(options)); date kept as ISO string (M2).
+ * - Unknown keys are stripped (zod object default).
+ * (M4 will reuse this for visible-field-only validation.)
+ */
+function fieldToZod(f: Field): z.ZodTypeAny {
+  let s: z.ZodTypeAny
+  switch (f.type) {
+    case 'number':
+      s = z.coerce.number()
+      break
+    case 'email':
+      s = z.string().email()
+      break
+    case 'select':
+    case 'radio':
+      s = f.options?.length
+        ? z.enum(f.options as [string, ...string[]])
+        : z.string()
+      break
+    case 'checkbox':
+      s = f.options?.length
+        ? z.array(z.enum(f.options as [string, ...string[]]))
+        : z.array(z.string())
+      break
+    case 'date':
+    case 'text':
+    case 'textarea':
+    default:
+      s = z.string()
+      break
+  }
+  if (f.required) {
+    if (s instanceof z.ZodString) s = s.min(1)
+    else if (s instanceof z.ZodArray) s = s.min(1)
+  } else {
+    s = s.optional()
+  }
+  return s
+}
+
+export function fieldsToZodSchema(
+  fields: Field[],
+): z.ZodType<Record<string, unknown>> {
+  const shape: Record<string, z.ZodTypeAny> = {}
+  for (const f of fields) shape[f.id] = fieldToZod(f)
+  return z.object(shape)
+}
