@@ -45,7 +45,7 @@ export async function createSubmission(input: {
 }): Promise<{ id: string }> {
   const form = await getFormBySlug(input.orgSlug, input.formSlug)
   if (!form) throw notFound()
-  const values = fieldsToZodSchema(form.fields).parse(input.values) as Record<string, unknown>
+  const values = fieldsToZodSchema(form.fields).parse(input.values)
   const { getPrisma } = await import('#/db')
   const prisma = await getPrisma()
   const sub = await prisma.submission.create({

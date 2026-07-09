@@ -27,6 +27,6 @@ export const submitSubmission = createServerFn({ method: 'POST' })
     return createSubmission({
       orgSlug: data.orgSlug,
       formSlug: data.formSlug,
-      values: data.values as Record<string, unknown>,
+      values: data.values,
     })
   })
