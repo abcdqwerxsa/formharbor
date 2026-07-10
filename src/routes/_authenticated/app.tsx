@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { createFileRoute, useNavigate, Link } from '@tanstack/react-router'
 import { logout } from '#/server/auth/functions'
 import { getCurrentOrg } from '#/server/auth/org-middleware'
 import { useState, useEffect } from 'react'
@@ -44,7 +44,9 @@ function AppHome() {
               {' '}·{' '}
               <span className="demo-muted">{org.role}</span>
             </p>
-            <p className="demo-muted mt-3 text-sm">Forms (none yet — M1b)</p>
+            <p className="mt-3 text-sm">
+              <Link to="/app/forms" className="text-[var(--lagoon-deep)] underline">Forms →</Link>
+            </p>
           </div>
         ) : (
           <p className="demo-muted mb-6 text-sm">Loading org…</p>
